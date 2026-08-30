@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OpenFIM — Open evaluation infrastructure for Food-is-Medicine AI</title>
+<meta name="description" content="OpenFIM is open evaluation infrastructure for testing whether AI-generated nutrition guidance is appropriate, evidence-based, context-aware, and safe." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EFF1EA;
+    --paper-raise: #F7F8F3;
+    --ink: #1B2620;
+    --ink-soft: #45514A;
+    --line: #C7CEC2;
+    --line-strong: #9AA69B;
+    --teal: #24625A;
+    --teal-deep: #17423C;
+    --brick: #93392C;
+    --mustard: #A8791F;
+    --white: #FFFFFF;
+
+    --serif: "Source Serif 4", Georgia, serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --maxw: 1120px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:var(--teal-deep); }
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px; height:1px;
+    background:var(--teal);
+    display:inline-block;
+  }
+
+  h1,h2,h3{
+    font-family:var(--serif);
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+    color:var(--ink);
+  }
+
+  section{ padding:88px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+
+  /* ---------- NAV ---------- */
+  header.site{
+    position:sticky; top:0; z-index:40;
+    background:rgba(239,241,234,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    max-width:var(--maxw); margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-mark{
+    font-family:var(--mono); font-weight:600; font-size:15px;
+    letter-spacing:0.02em; color:var(--ink); text-decoration:none;
+    display:flex; align-items:center; gap:9px;
+  }
+  .nav-mark .dot{
+    width:9px;height:9px;border-radius:2px;
+    background:var(--teal);
+    display:inline-block;
+  }
+  .nav-links{ display:flex; gap:26px; align-items:center; }
+  .nav-links a{
+    font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+    text-decoration:none; letter-spacing:0.01em;
+  }
+  .nav-links a:hover{ color:var(--teal-deep); }
+  .nav-cta{
+    font-family:var(--mono); font-size:13px;
+    border:1px solid var(--ink); color:var(--ink) !important;
+    padding:7px 14px; border-radius:3px; text-decoration:none;
+  }
+  .nav-cta:hover{ background:var(--ink); color:var(--paper) !important; }
+  .nav-toggle{ display:none; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:96px 0 72px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.25fr 0.85fr;
+    gap:56px;
+    align-items:start;
+  }
+  .hero h1{
+    font-size:clamp(40px, 5.4vw, 62px);
+    line-height:1.04;
+  }
+  .hero .tagline{
+    font-size:clamp(19px, 2.2vw, 23px);
+    line-height:1.45;
+    color:var(--ink-soft);
+    margin-top:22px;
+    max-width:34ch;
+  }
+  .hero .tagline strong{ color:var(--ink); font-weight:600; }
+  .hero-actions{
+    margin-top:34px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    font-family:var(--mono); font-size:14px;
+    padding:12px 20px;
+    border-radius:3px;
+    text-decoration:none;
+    display:inline-block;
+    border:1px solid var(--ink);
+  }
+  .btn-primary{ background:var(--ink); color:var(--paper); }
+  .btn-primary:hover{ background:var(--teal-deep); border-color:var(--teal-deep); }
+  .btn-ghost{ color:var(--ink); }
+  .btn-ghost:hover{ background:var(--paper-raise); }
+
+  /* Evaluation Facts label — the signature element */
+  .facts{
+    background:var(--white);
+    border:3px solid var(--ink);
+    padding:18px 20px 16px;
+    font-family:var(--mono);
+    max-width:340px;
+    justify-self:end;
+  }
+  .facts .facts-title{
+    font-family:var(--sans);
+    font-weight:800;
+    font-size:26px;
+    letter-spacing:-0.01em;
+    border-bottom:8px solid var(--ink);
+    padding-bottom:6px;
+    margin-bottom:6px;
+  }
+  .facts .facts-sub{
+    font-size:12px; color:var(--ink-soft);
+    border-bottom:1px solid var(--ink);
+    padding-bottom:6px; margin-bottom:6px;
+  }
+  .facts-row{
+    display:flex; justify-content:space-between;
+    font-size:12.5px;
+    padding:5px 0;
+    border-bottom:1px solid var(--line-strong);
+  }
+  .facts-row.thick{ border-bottom:4px solid var(--ink); padding-top:8px; }
+  .facts-row .k{ color:var(--ink); }
+  .facts-row .v{ color:var(--ink-soft); }
+  .facts-contains{
+    font-size:11.5px; line-height:1.55; color:var(--ink-soft);
+    padding-top:9px; margin-top:2px; border-top:6px solid var(--ink);
+  }
+  .facts-contains b{ color:var(--ink); font-family:var(--sans); }
+
+  /* ---------- WHY ---------- */
+  .why-lede{
+    font-family:var(--serif);
+    font-size:26px;
+    line-height:1.5;
+    max-width:58ch;
+    margin:26px 0 44px;
+    color:var(--ink);
+  }
+  .factor-band{
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--teal-deep);
+    padding:16px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    letter-spacing:0.01em;
+  }
+  .why-close{
+    margin-top:36px; max-width:60ch;
+    color:var(--ink-soft);
+  }
+  .why-close strong{ color:var(--ink); }
+
+  /* ---------- PIPELINE ---------- */
+  .pipeline{
+    margin-top:44px;
+    display:grid;
+    gap:0;
+  }
+  .stage{
+    display:grid;
+    grid-template-columns:64px 1fr;
+    gap:22px;
+    padding:22px 0;
+  }
+  .stage-rail{
+    position:relative;
+    display:flex; justify-content:center;
+  }
+  .stage-rail .node{
+    width:12px;height:12px;border-radius:50%;
+    background:var(--teal); border:2px solid var(--paper);
+    box-shadow:0 0 0 1px var(--teal);
+    margin-top:6px;
+    z-index:2;
+  }
+  .stage-rail .rail-line{
+    position:absolute; top:18px; bottom:-22px; left:50%;
+    width:1px; background:var(--line-strong);
+    transform:translateX(-50%);
+  }
+  .stage:last-child .stage-rail .rail-line{ display:none; }
+  .stage h3{ font-size:20px; }
+  .stage p{ color:var(--ink-soft); margin:8px 0 0; max-width:56ch; }
+  .stage .stage-label{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--mustard);
+  }
+  .pipeline-note{
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--ink);
+    background:var(--paper-raise);
+    border:1px solid var(--line);
+    border-left:3px solid var(--teal);
+    padding:18px 20px;
+    margin-top:8px;
+    max-width:56ch;
+  }
+
+  /* ---------- TASKS ---------- */
+  .tasks-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-top:36px;
+  }
+  .task{
+    background:var(--paper-raise);
+    padding:30px 26px;
+  }
+  .task .eyebrow{ margin-bottom:14px; }
+  .task h3{ font-size:22px; }
+  .task p{ color:var(--ink-soft); margin-top:10px; }
+  .safety-note{
+    margin-top:40px;
+    border:1px solid var(--brick);
+    background:rgba(147,57,44,0.06);
+    padding:24px 26px;
+  }
+  .safety-note .eyebrow{ color:var(--brick); }
+  .safety-note .eyebrow::before{ background:var(--brick); }
+  .safety-note p{ margin-top:10px; color:var(--ink-soft); }
+  .safety-note strong{ color:var(--brick); }
+
+  /* ---------- EXPERT JUDGMENT ---------- */
+  .expert-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:18px;
+    margin-top:36px;
+  }
+  .expert-card{
+    border:1px solid var(--line);
+    background:var(--paper-raise);
+    padding:22px 20px;
+  }
+  .expert-card .mark{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--teal-deep);
+    display:block;
+    margin-bottom:10px;
+  }
+  .expert-card h3{ font-size:17px; font-family:var(--sans); font-weight:700; }
+  .expert-card p{ color:var(--ink-soft); font-size:14.5px; margin-top:8px; }
+  .expert-question{
+    margin-top:40px;
+    font-family:var(--serif);
+    font-size:24px;
+    line-height:1.5;
+    border-left:3px solid var(--teal);
+    padding-left:22px;
+    max-width:56ch;
+  }
+
+  /* ---------- BUILT IN THE OPEN ---------- */
+  .open-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:56px;
+    align-items:start;
+    margin-top:20px;
+  }
+  .ledger{
+    font-family:var(--mono);
+    font-size:14.5px;
+    border:1px solid var(--line);
+    background:var(--paper-raise);
+  }
+  .ledger li{
+    list-style:none;
+    padding:13px 18px;
+    border-bottom:1px solid var(--line);
+    display:flex; gap:12px;
+  }
+  .ledger li:last-child{ border-bottom:none; }
+  .ledger li::before{ content:"–"; color:var(--teal); }
+  .open-note{ color:var(--ink-soft); margin-top:18px; }
+  .open-note strong{ color:var(--ink); }
+
+  /* ---------- WHO ---------- */
+  .who-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-top:36px;
+  }
+  .who-card{
+    background:var(--paper-raise);
+    padding:26px 24px;
+    min-height:150px;
+  }
+  .who-card .role{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--mustard);
+  }
+  .who-card h3{ font-family:var(--sans); font-weight:700; font-size:17px; margin-top:8px; }
+  .who-card p{ color:var(--ink-soft); font-size:14.5px; margin-top:8px; }
+  .who-close{
+    font-family:var(--serif); font-size:20px; font-style:italic;
+    color:var(--ink); margin-top:30px; max-width:52ch;
+  }
+
+  /* ---------- COMMUNITY STEPPER ---------- */
+  .stepper{
+    display:flex; align-items:center; gap:10px;
+    margin-top:40px; flex-wrap:wrap;
+  }
+  .step-pill{
+    font-family:var(--mono); font-size:14px;
+    border:1px solid var(--ink); border-radius:20px;
+    padding:9px 18px; color:var(--ink);
+  }
+  .step-arrow{ color:var(--line-strong); font-size:16px; }
+  .stepper-note{ color:var(--ink-soft); margin-top:22px; max-width:56ch; }
+
+  /* ---------- QUESTIONS ---------- */
+  .q-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:14px;
+    margin-top:36px;
+  }
+  .q-card{
+    border:1px solid var(--line);
+    background:var(--paper-raise);
+    padding:18px 20px;
+    font-size:15.5px;
+  }
+  .q-card .q-mark{
+    font-family:var(--mono); font-size:13px; color:var(--teal-deep);
+    margin-right:6px;
+  }
+
+  /* ---------- GET INVOLVED ---------- */
+  .involve{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:4px;
+    padding:52px 48px;
+    margin-top:20px;
+  }
+  .involve h2{ color:var(--paper); font-size:30px; }
+  .involve-list{
+    margin:26px 0 0;
+    padding:0;
+    list-style:none;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px 30px;
+    font-family:var(--mono);
+    font-size:14.5px;
+  }
+  .involve-list li{
+    padding-left:16px;
+    position:relative;
+    color:#DCE3D8;
+  }
+  .involve-list li::before{
+    content:"›"; position:absolute; left:0; color:var(--mustard);
+  }
+  .involve-actions{
+    margin-top:34px; display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .involve-actions .btn-primary{ background:var(--paper); color:var(--ink); border-color:var(--paper); }
+  .involve-actions .btn-primary:hover{ background:var(--mustard); border-color:var(--mustard); color:var(--ink); }
+  .involve-actions .btn-ghost{ color:var(--paper); border-color:#5A665F; }
+  .involve-actions .btn-ghost:hover{ background:#26332C; }
+
+  /* ---------- CLOSING ---------- */
+  .closing{
+    text-align:center;
+    padding:70px 0 40px;
+    border-bottom:none;
+  }
+  .closing p{
+    font-family:var(--serif); font-size:clamp(22px,3vw,30px);
+    line-height:1.45; max-width:44ch; margin:0 auto; color:var(--ink);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer.site{
+    background:var(--paper-raise);
+    border-top:1px solid var(--line);
+    padding:44px 0 34px;
+  }
+  .foot-grid{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:24px; flex-wrap:wrap;
+  }
+  footer.site .nav-mark{ margin-bottom:8px; }
+  footer.site .foot-desc{ color:var(--ink-soft); font-size:14.5px; max-width:32ch; }
+  .foot-links{
+    display:flex; gap:22px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:13.5px;
+  }
+  .foot-links a{ color:var(--ink-soft); text-decoration:none; }
+  .foot-links a:hover{ color:var(--teal-deep); }
+  .foot-disclaimer{
+    margin-top:30px; padding-top:22px; border-top:1px solid var(--line);
+    font-size:13px; color:var(--ink-soft); font-style:italic;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .facts{ justify-self:start; max-width:100%; }
+    .tasks-grid{ grid-template-columns:1fr; }
+    .expert-grid{ grid-template-columns:1fr 1fr; }
+    .open-grid{ grid-template-columns:1fr; gap:36px; }
+    .who-grid{ grid-template-columns:1fr 1fr; }
+    .q-grid{ grid-template-columns:1fr; }
+    .involve-list{ grid-template-columns:1fr 1fr; }
+    .involve{ padding:40px 26px; }
+  }
+  @media (max-width:640px){
+    section{ padding:60px 0; }
+    .nav-links{ display:none; }
+    .expert-grid{ grid-template-columns:1fr; }
+    .who-grid{ grid-template-columns:1fr; }
+    .involve-list{ grid-template-columns:1fr; }
+    .stage{ grid-template-columns:36px 1fr; gap:14px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="nav-mark" href="#top"><span class="dot"></span>OpenFIM</a>
+    <div class="nav-links">
+      <a href="#why">Why</a>
+      <a href="#pipeline">Approach</a>
+      <a href="#tasks">Tasks</a>
+      <a href="#open">Open work</a>
+      <a href="#who">Who</a>
+      <a href="#questions">Open questions</a>
+    </div>
+    <a class="nav-cta" href="https://github.com/Open-FIM/OpenFIM-Bench">GitHub ↗</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Open-FIM · early-stage, built in public</p>
+        <h1>OpenFIM</h1>
+        <p class="tagline">Open evaluation infrastructure for trustworthy Food-is-Medicine AI. AI can already generate nutrition advice — <strong>OpenFIM is being built to help determine whether that advice is appropriate, evidence-based, context-aware, and safe.</strong></p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://github.com/Open-FIM/OpenFIM-Bench">Explore OpenFIM-Bench</a>
+          <a class="btn btn-ghost" href="#who">Join the project</a>
+        </div>
+      </div>
+
+      <div class="facts" role="img" aria-label="Evaluation Facts label summarizing what OpenFIM evaluates in an AI-generated nutrition recommendation">
+        <div class="facts-title">Evaluation Facts</div>
+        <div class="facts-sub">Serving size: 1 AI-generated recommendation</div>
+        <div class="facts-row"><span class="k">Appropriateness</span><span class="v">assessed</span></div>
+        <div class="facts-row"><span class="k">Evidence basis</span><span class="v">assessed</span></div>
+        <div class="facts-row"><span class="k">Context-awareness</span><span class="v">assessed</span></div>
+        <div class="facts-row thick"><span class="k">Safety</span><span class="v">assessed</span></div>
+        <div class="facts-contains">
+          <b>Contains:</b> multimorbidity, competing priorities, uncertainty, expert disagreement, safety boundaries.<br/>
+          <b>Grounded in:</b> NHANES-derived, population-level cases.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section id="why">
+    <div class="wrap">
+      <p class="eyebrow">Why OpenFIM</p>
+      <p class="why-lede">Food-is-Medicine decisions are rarely simple. An AI system can know many individual nutrition facts and still get the overall decision wrong.</p>
+      <div class="factor-band">
+        Diet&nbsp;&nbsp;·&nbsp;&nbsp;Health conditions&nbsp;&nbsp;·&nbsp;&nbsp;Laboratory findings&nbsp;&nbsp;·&nbsp;&nbsp;Medications&nbsp;&nbsp;·&nbsp;&nbsp;Food access&nbsp;&nbsp;·&nbsp;&nbsp;Culture&nbsp;&nbsp;·&nbsp;&nbsp;Household circumstances
+      </div>
+      <p class="why-close">A useful evaluation may need to weigh all of the above at once. <strong>OpenFIM is developing an open way to test that difference</strong>, between knowing nutrition facts and making a defensible nutrition decision.</p>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section id="pipeline">
+    <div class="wrap">
+      <p class="eyebrow">From population data to meaningful AI evaluation</p>
+      <div class="pipeline">
+        <div class="stage">
+          <div class="stage-rail"><span class="node"></span><span class="rail-line"></span></div>
+          <div>
+            <span class="stage-label">01 — Source</span>
+            <h3>Population data</h3>
+            <p>NHANES and other appropriate sources provide real-world information about people, diets, health, and context.</p>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="stage-rail"><span class="node"></span><span class="rail-line"></span></div>
+          <div>
+            <span class="stage-label">02 — Construct</span>
+            <h3>Person-level cases</h3>
+            <p>Source data is transformed into structured nutrition decision cases.</p>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="stage-rail"><span class="node"></span><span class="rail-line"></span></div>
+          <div>
+            <span class="stage-label">03 — Review</span>
+            <h3>Expert judgment</h3>
+            <p>Independent nutrition professionals evaluate what matters, what should be prioritized, and what recommendations are defensible.</p>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="stage-rail"><span class="node"></span><span class="rail-line"></span></div>
+          <div>
+            <span class="stage-label">04 — Test</span>
+            <h3>AI evaluation</h3>
+            <p>Different AI systems are evaluated using the same cases and transparent criteria.</p>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="stage-rail"><span class="node"></span></div>
+          <div>
+            <span class="stage-label">05 — Improve</span>
+            <h3>Open benchmark</h3>
+            <p>Cases, methods, provenance, evaluation procedures, and lessons can be improved by the broader community.</p>
+          </div>
+        </div>
+      </div>
+      <div class="pipeline-note">NHANES is the source data.<br/>OpenFIM is the evaluation layer.</div>
+    </div>
+  </section>
+
+  <!-- TASKS -->
+  <section id="tasks">
+    <div class="wrap">
+      <p class="eyebrow">What are we evaluating?</p>
+      <p class="why-lede" style="margin-bottom:0;">OpenFIM is initially exploring three connected tasks.</p>
+      <div class="tasks-grid">
+        <div class="task">
+          <p class="eyebrow">Assess</p>
+          <h3>Assess</h3>
+          <p>Can the system identify the information that actually matters?</p>
+        </div>
+        <div class="task">
+          <p class="eyebrow">Prioritize</p>
+          <h3>Prioritize</h3>
+          <p>Can it identify the most important nutrition problem in a complex case?</p>
+        </div>
+        <div class="task">
+          <p class="eyebrow">Intervene</p>
+          <h3>Intervene</h3>
+          <p>Can it propose realistic nutrition changes while accounting for health, safety, resources, and context?</p>
+        </div>
+      </div>
+      <div class="safety-note">
+        <p class="eyebrow">Across all three</p>
+        <p><strong>Safety matters.</strong> We are particularly interested in multimorbidity, competing nutrition priorities, uncertainty, inappropriate recommendations, unsupported therapeutic claims, and failure to recognize when professional care is needed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERT JUDGMENT -->
+  <section id="expert">
+    <div class="wrap">
+      <p class="eyebrow">Why expert judgment?</p>
+      <p class="why-lede">Nutrition decisions do not always have one correct answer. Two qualified dietitians may recommend different approaches while both remain professionally defensible.</p>
+      <p style="color:var(--ink-soft); max-width:60ch;">OpenFIM therefore explores evaluation based not only on a single "gold answer," but on:</p>
+      <div class="expert-grid">
+        <div class="expert-card">
+          <span class="mark">Agreement</span>
+          <h3>What experts commonly identify</h3>
+          <p>What experts commonly identify or recommend.</p>
+        </div>
+        <div class="expert-card">
+          <span class="mark">Acceptable variation</span>
+          <h3>Different, defensible approaches</h3>
+          <p>Different approaches that remain defensible.</p>
+        </div>
+        <div class="expert-card">
+          <span class="mark">Disagreement</span>
+          <h3>Where judgment differs</h3>
+          <p>Places where expert judgment genuinely differs.</p>
+        </div>
+        <div class="expert-card">
+          <span class="mark">Safety boundaries</span>
+          <h3>Where recommendations cross the line</h3>
+          <p>Recommendations that cross important professional or clinical boundaries.</p>
+        </div>
+      </div>
+      <p class="expert-question">This allows us to ask a more useful question: does an AI system stay within the range of professionally defensible nutrition judgment?</p>
+    </div>
+  </section>
+
+  <!-- BUILT IN THE OPEN -->
+  <section id="open">
+    <div class="wrap">
+      <p class="eyebrow">Built in the open</p>
+      <div class="open-grid">
+        <div>
+          <p class="why-lede" style="margin-top:22px;">OpenFIM-Bench is new and intentionally being developed in public. Today, the repository contains early work on:</p>
+          <ul class="ledger">
+            <li>NHANES extraction and harmonization</li>
+            <li>Population-grounded case construction</li>
+            <li>Complex and multimorbid cases</li>
+            <li>Synthetic/augmented challenge cases</li>
+            <li>Narrative and contextual information</li>
+            <li>Adversarial evaluation</li>
+          </ul>
+        </div>
+        <div>
+          <p class="open-note">The benchmark specification, expert-review process, governance model, contribution pathways, and long-term stewardship are still being developed.</p>
+          <p class="open-note" style="margin-top:16px;"><strong>We are opening the process before those decisions become fixed.</strong></p>
+          <div class="hero-actions" style="margin-top:28px;">
+            <a class="btn btn-primary" href="https://github.com/Open-FIM/OpenFIM-Bench">View OpenFIM-Bench</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO -->
+  <section id="who">
+    <div class="wrap">
+      <p class="eyebrow">Who should participate?</p>
+      <p class="why-lede">OpenFIM needs more than software developers.</p>
+      <div class="who-grid">
+        <div class="who-card">
+          <p class="role">Nutrition</p>
+          <h3>RDNs &amp; nutrition professionals</h3>
+          <p>Help define appropriate assessment, intervention, and safety.</p>
+        </div>
+        <div class="who-card">
+          <p class="role">Research</p>
+          <h3>Nutrition researchers</h3>
+          <p>Help design cases, evaluation methods, and scientific criteria.</p>
+        </div>
+        <div class="who-card">
+          <p class="role">Practice</p>
+          <h3>Community &amp; public-health practitioners</h3>
+          <p>Help represent food access, feasibility, culture, and real-world constraints.</p>
+        </div>
+        <div class="who-card">
+          <p class="role">Evidence</p>
+          <h3>Evidence experts</h3>
+          <p>Help address provenance, source selection, and evidence updating.</p>
+        </div>
+        <div class="who-card">
+          <p class="role">AI / ML</p>
+          <h3>AI researchers &amp; developers</h3>
+          <p>Help build interoperable evaluation methods and test diverse systems.</p>
+        </div>
+        <div class="who-card">
+          <p class="role">Infrastructure</p>
+          <h3>Open-source contributors</h3>
+          <p>Help create reproducible infrastructure, testing, documentation, and governance.</p>
+        </div>
+      </div>
+      <p class="who-close">Not all contributions are code.</p>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section id="community">
+    <div class="wrap">
+      <p class="eyebrow">The community we are building</p>
+      <p class="why-lede">Our goal is a progression from:</p>
+      <div class="stepper">
+        <span class="step-pill">Discover</span><span class="step-arrow">→</span>
+        <span class="step-pill">Try</span><span class="step-arrow">→</span>
+        <span class="step-pill">Contribute</span><span class="step-arrow">→</span>
+        <span class="step-pill">Review</span><span class="step-arrow">→</span>
+        <span class="step-pill">Govern</span>
+      </div>
+      <p class="stepper-note">People should be able to enter OpenFIM through the form of contribution that matches their expertise and, over time, take on deeper roles in reviewing and governing the ecosystem. <strong>The benchmark should not be permanently controlled by the people who created it.</strong></p>
+    </div>
+  </section>
+
+  <!-- QUESTIONS -->
+  <section id="questions">
+    <div class="wrap">
+      <p class="eyebrow">Our near-term questions</p>
+      <p class="why-lede">We are intentionally leaving important questions open.</p>
+      <div class="q-grid">
+        <div class="q-card"><span class="q-mark">Q.</span>What cases matter most?</div>
+        <div class="q-card"><span class="q-mark">Q.</span>How many independent experts are needed?</div>
+        <div class="q-card"><span class="q-mark">Q.</span>How should expert disagreement be represented?</div>
+        <div class="q-card"><span class="q-mark">Q.</span>What makes a recommendation unsafe?</div>
+        <div class="q-card"><span class="q-mark">Q.</span>Which contextual information is essential?</div>
+        <div class="q-card"><span class="q-mark">Q.</span>How should synthetic challenge cases be validated?</div>
+        <div class="q-card"><span class="q-mark">Q.</span>What should be community-governed?</div>
+        <div class="q-card"><span class="q-mark">Q.</span>What is the right long-term home for OpenFIM?</div>
+      </div>
+      <p class="stepper-note">These are not side questions. They are central to building a credible open evaluation ecosystem.</p>
+    </div>
+  </section>
+
+  <!-- GET INVOLVED -->
+  <section id="involved">
+    <div class="wrap">
+      <div class="involve">
+        <p class="eyebrow" style="color:#9FD6C9;">Get involved</p>
+        <h2>OpenFIM is early. That is an invitation, not a limitation.</h2>
+        <ul class="involve-list">
+          <li>Read the benchmark work</li>
+          <li>Open an issue</li>
+          <li>Suggest a case</li>
+          <li>Challenge an assumption</li>
+          <li>Review an evaluation method</li>
+          <li>Contribute code, expertise, or documentation</li>
+        </ul>
+        <div class="involve-actions">
+          <a class="btn btn-primary" href="https://github.com/Open-FIM/OpenFIM-Bench">OpenFIM-Bench on GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/Open-FIM">OpenFIM organization on GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <div class="wrap">
+      <p class="eyebrow" style="justify-content:center;">Research · Open evaluation · Shared stewardship</p>
+      <p style="margin-top:18px;">OpenFIM is building infrastructure for a future in which Food-is-Medicine AI can be independently tested, challenged, compared, and improved.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="nav-mark" href="#top"><span class="dot"></span>OpenFIM</a>
+        <p class="foot-desc">Open evaluation infrastructure for Food-is-Medicine AI.</p>
+      </div>
+      <div class="foot-links">
+        <a href="https://github.com/Open-FIM/OpenFIM-Bench">GitHub</a>
+        <a href="https://github.com/Open-FIM/OpenFIM-Bench">OpenFIM-Bench</a>
+        <a href="#">Publications</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <p class="foot-disclaimer">OpenFIM is a research and open-source project. It is not a clinical decision-support system and does not provide medical advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>
