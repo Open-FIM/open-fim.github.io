@@ -380,6 +380,72 @@
     color:var(--ink); margin-top:30px; max-width:52ch;
   }
 
+  /* ---------- STAKEHOLDERS ---------- */
+  .stakeholder-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+    margin-top:36px;
+  }
+
+  .stakeholder-card{
+    border:1px solid var(--line);
+    background:var(--paper-raise);
+    padding:26px 24px;
+  }
+
+  .stakeholder-card .role{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--mustard);
+  }
+
+  .stakeholder-card h3{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:18px;
+    margin-top:8px;
+  }
+
+  .stakeholder-card p{
+    color:var(--ink-soft);
+    font-size:14.5px;
+    margin-top:8px;
+  }
+
+  .stakeholder-list{
+    margin:18px 0 0;
+    padding:0;
+    list-style:none;
+  }
+
+  .stakeholder-list li{
+    padding:10px 0;
+    border-top:1px solid var(--line);
+    color:var(--ink);
+  }
+
+  .stakeholder-list li:first-child{
+    border-top:none;
+  }
+
+  .stakeholder-list a{
+    color:var(--teal-deep);
+    text-decoration:none;
+  }
+
+  .stakeholder-list a:hover{
+    text-decoration:underline;
+  }
+
+  .stakeholder-note{
+    margin-top:30px;
+    color:var(--ink-soft);
+    max-width:62ch;
+  }
+
   /* ---------- COMMUNITY STEPPER ---------- */
   .stepper{
     display:flex; align-items:center; gap:10px;
@@ -488,6 +554,7 @@
     .expert-grid{ grid-template-columns:1fr 1fr; }
     .open-grid{ grid-template-columns:1fr; gap:36px; }
     .who-grid{ grid-template-columns:1fr 1fr; }
+    .stakeholder-grid{ grid-template-columns:1fr; }
     .q-grid{ grid-template-columns:1fr; }
     .involve-list{ grid-template-columns:1fr 1fr; }
     .involve{ padding:40px 26px; }
@@ -513,6 +580,7 @@
       <a href="#tasks">Tasks</a>
       <a href="#open">Open work</a>
       <a href="#who">Who</a>
+      <a href="#stakeholders">Stakeholders</a>
       <a href="#questions">Open questions</a>
     </div>
     <a class="nav-cta" href="https://github.com/Open-FIM/OpenFIM-Bench">GitHub ↗</a>
@@ -737,6 +805,88 @@
         </div>
       </div>
       <p class="who-close">Not all contributions are code.</p>
+    </div>
+  </section>
+
+  <!-- STAKEHOLDERS -->
+  <section id="stakeholders">
+    <div class="wrap">
+      <p class="eyebrow">Community &amp; Stakeholders</p>
+
+      <p class="why-lede">
+        OpenFIM is being shaped with input from people and organizations working across nutrition, public health, clinical care, community programs, AI, and open-source infrastructure.
+      </p>
+
+      <p style="color:var(--ink-soft); max-width:62ch;">
+        We welcome stakeholders who can help us identify real-world use cases, review whether proposed tools are practical and appropriate, and help guide how the ecosystem should evolve.
+      </p>
+
+      <div class="stakeholder-grid">
+
+        <div class="stakeholder-card">
+          <p class="role">Public health &amp; community</p>
+          <h3>Pilot partners</h3>
+          <p>Providing perspective on community-based nutrition education, outreach, and implementation needs.</p>
+
+          <ul class="stakeholder-list">
+            <li>
+              <strong>
+                <a href="https://extension.arizona.edu/" target="_blank" rel="noopener noreferrer">
+                  University of Arizona Cooperative Extension
+                </a>
+              </strong>
+            </li>
+          </ul>
+        </div>
+
+        <div class="stakeholder-card">
+          <p class="role">Clinical &amp; nutrition</p>
+          <h3>Pilot partners</h3>
+          <p>Providing nutrition, dietetics, and clinical perspective on safety, feasibility, and appropriate use.</p>
+
+          <ul class="stakeholder-list">
+            <li>
+              <strong>
+                <a href="https://eatrightarizona.org/arizona-southern-district/" target="_blank" rel="noopener noreferrer">
+                  Southern Arizona Dietetics Association
+                </a>
+              </strong>
+            </li>
+            <li><strong>Independent RDs</strong></li>
+          </ul>
+        </div>
+
+        <div class="stakeholder-card">
+          <p class="role">Research &amp; technical</p>
+          <h3>Advisors</h3>
+          <p>Contributing research and technical expertise to the development of OpenFIM.</p>
+
+          <ul class="stakeholder-list">
+            <li>
+              <strong>
+                <a href="https://www.simmons.edu/directory/departments/sshp/nutrition" target="_blank" rel="noopener noreferrer">
+                  Simmons University Department of Nutrition
+                </a>
+              </strong><br>
+              <span style="color:var(--ink-soft); font-size:14px;">
+                Contributing expertise in nutrition science evaluation.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <p class="stakeholder-note">
+        Stakeholder participation may include identifying real-world needs, reviewing use cases and evaluation approaches, providing subject-matter expertise, or exploring future pilot opportunities. Participation does not imply endorsement of every OpenFIM component or recommendation.
+      </p>
+
+      <div class="hero-actions" style="margin-top:26px;">
+        <a class="btn btn-ghost" href="https://github.com/Open-FIM/OpenFIM-Bench/blob/main/Stakeholders%2C%20pilot-partners%20and%20supporting%20organizations.md">
+          View stakeholder details on GitHub
+        </a>
+      </div>
+
     </div>
   </section>
 
